@@ -1,6 +1,7 @@
 import os
 import tempfile
 import base64
+import traceback
 from pathlib import Path
 from typing import Optional
 from importlib.metadata import version
@@ -85,7 +86,9 @@ async def predict_audio(
                 model_or_model_path=ICASSP_2022_MODEL_PATH,
             )
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
+            tb = traceback.format_exc()
+            print(f"Prediction error: {tb}", flush=True)
+            raise HTTPException(status_code=500, detail=f"Prediction failed: {type(e).__name__}: {str(e)}\n{tb}")
 
         midi_files = list(output_dir.glob("*.mid"))
         if not midi_files:
@@ -149,7 +152,9 @@ async def predict_audio_file(
             model_or_model_path=ICASSP_2022_MODEL_PATH,
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
+        tb = traceback.format_exc()
+        print(f"Prediction error: {tb}", flush=True)
+        raise HTTPException(status_code=500, detail=f"Prediction failed: {type(e).__name__}: {str(e)}\n{tb}")
 
     midi_files = list(output_dir.glob("*.mid"))
     if not midi_files:
