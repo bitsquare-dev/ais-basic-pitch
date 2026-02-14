@@ -3,13 +3,15 @@ import tempfile
 import base64
 from pathlib import Path
 from typing import Optional
+from importlib.metadata import version
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, Query
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
-import basic_pitch
 from basic_pitch.inference import predict_and_save, predict
 from basic_pitch import ICASSP_2022_MODEL_PATH
+
+BASIC_PITCH_VERSION = version("basic-pitch")
 
 app = FastAPI(
     title="Basic Pitch API",
@@ -31,7 +33,7 @@ class HealthResponse(BaseModel):
 @app.get("/health", response_model=HealthResponse)
 async def health_check():
     """Health check endpoint for container orchestration."""
-    return HealthResponse(status="healthy", version=basic_pitch.__version__)
+    return HealthResponse(status="healthy", version=BASIC_PITCH_VERSION)
 
 
 @app.post("/predict", response_model=PredictionResponse)
