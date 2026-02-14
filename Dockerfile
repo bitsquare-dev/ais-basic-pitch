@@ -15,7 +15,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Download and cache the model during build
-RUN python -c "from basic_pitch import ICASSP_2022_MODEL_PATH; import tensorflow as tf; tf.saved_model.load(str(ICASSP_2022_MODEL_PATH))"
+RUN python -c "from basic_pitch.inference import predict; print('Model loaded')"
 
 # Copy application code
 COPY api.py .

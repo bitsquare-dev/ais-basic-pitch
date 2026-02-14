@@ -1,4 +1,4 @@
-basic-pitch==0.4.0
+basic-pitch[tf]==0.4.0
 fastapi==0.109.2
 uvicorn[standard]==0.27.1
 python-multipart==0.0.9
